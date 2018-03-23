@@ -19,8 +19,9 @@ const ICON_OPACITY = 200;
 const ICON_OPACITY_ACTIVE = 255;
 
 let settings;
-let button;
+let button = null;
 let wheel = null;
+let signals = [];
 
 function _bindKey(key, handler) {
     if (Main.wm.addKeybinding && Shell.ActionMode) {
@@ -70,47 +71,52 @@ function unbindKeys() {
     _unbindKey(WHEEL_KEY);
 }
 
+function connectSignal(obj, signal, handler) {
+    signals.push([obj, obj.connect(signal, handler)]);
+}
+
+function disconnectSignals() {
+    signals.forEach(s => s[0].disconnect(s[1]));
+    signals = [];
+}
+
 function updateSettings() {
     unbindKeys();
     settings = Convenience.getSettings();
-    settings.connect('changed::command8', () => reinit()); // listen for any of the commands
+    connectSignal(settings, 'changed::command8', () => reinit());
     bindKeys();
 }
 
-function init() {
-    updateSettings();
-    button = new St.Bin({ style_class: 'panel-button',
-                          reactive: true,
-                          can_focus: true,
-                          x_fill: true,
-                          y_fill: false,
-                          track_hover: true });
+function init() {}
 
-    let icon = Icon.loadIcon('wheel-icon.png', 16);
-    icon.opacity = ICON_OPACITY;
-    button.set_child(icon);
-    reinitWheel();
-    button.connect('button-press-event', () => Util.spawn(['gnome-shell-extension-prefs', 'wheelaccess@fbxiang.outlook.com']));
-    button.connect('enter-event', () => icon.opacity=ICON_OPACITY_ACTIVE);
-    button.connect('leave-event', () => icon.opacity=ICON_OPACITY);
-}
-
+// update settings, create the prefs button, init the wheel
 function enable() {
     updateSettings();
+    if (!button) {
+        button = new St.Bin({ style_class: 'panel-button',
+                              reactive: true,
+                              can_focus: true,
+                              x_fill: true,
+                              y_fill: false,
+                              track_hover: true });
+        let icon = Icon.loadIcon('wheel-icon.png', 16);
+        icon.opacity = ICON_OPACITY;
+        button.set_child(icon);
+        connectSignal(button, 'button-press-event', () => Util.spawn(['gnome-shell-extension-prefs', 'wheelaccess@fbxiang.outlook.com']));
+        connectSignal(button, 'enter-event', () => icon.opacity=ICON_OPACITY_ACTIVE);
+        connectSignal(button, 'leave-event', () => icon.opacity=ICON_OPACITY);
+    }
     Main.panel._rightBox.insert_child_at_index(button, 0);
+    initWheel();
 }
 
 function disable() {
     unbindKeys();
+    destroyWheel();
     Main.panel._rightBox.remove_child(button);
 }
 
-function reinitWheel() {
-    if (wheel) {
-        wheel.destroy();
-        wheel = null;
-    }
-
+function initWheel() {
     let icons = [];
     let commands = [];
     for (let i = 1; i <= 8; i++) {
@@ -121,7 +127,21 @@ function reinitWheel() {
             commands.push(command);
         }
     }
-    wheel = new Wheel.WheelPopup(icons, commands);
+    let outerRadiusRatio = settings.get_double('outer-radius');
+    let innerRadiusRatio = settings.get_double('inner-radius');
+    wheel = new Wheel.WheelPopup(outerRadiusRatio, innerRadiusRatio, icons, commands);
+}
+
+function destroyWheel() {
+    if (wheel) {
+        wheel.destroy();
+        wheel = null;
+    }
+}
+
+function reinitWheel() {
+    destroyWheel();
+    initWheel();
 }
 
 function reinit() {

@@ -29,7 +29,7 @@ const Sector = new Lang.Class({
         this.canvas.set_size(this.width, this.height);
         this.actor.set_size(this.width, this.height);
         this.actor.set_content(this.canvas);
-        this.canvas.connect('draw', (canvas, cr, width, height) => { this._drawActor(cr); return true; });
+        this.drawSignal = this.canvas.connect('draw', (canvas, cr, width, height) => { this._drawActor(cr); return true; });
         this.canvas.invalidate();
 
         let [centerX, centerY] = this._getCenter();
@@ -81,6 +81,13 @@ const Sector = new Lang.Class({
         let monitor = Main.layoutManager.primaryMonitor;
         return [monitor.x + Math.floor(monitor.width / 2),
                 monitor.y + Math.floor(monitor.height / 2)];
+    },
+
+    destroy: function() {
+        if (this.drawSignal) this.canvas.disconnect(this.drawSignal);
+        this.drawSignal = null;
+
+        this.actor.destroy();
     },
 
     highlight: function() {

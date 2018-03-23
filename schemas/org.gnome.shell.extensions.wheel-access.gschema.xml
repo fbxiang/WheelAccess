@@ -88,5 +88,15 @@
         <summary>Command to execute</summary>
         <description>Command to execute</description>
     </key>
+    <key name="outer-radius" type="d">
+        <default>0.8</default>
+        <summary>Radius of the outer circle</summary>
+        <description>Radius of the outer circle, 1 is half of the screen size</description>
+    </key>
+    <key name="inner-radius" type="d">
+        <default>0.6</default>
+        <summary>Radius of the inner circle</summary>
+        <description>Radius of the inner circle, 1 is the size of the outer circle</description>
+    </key>
   </schema>
 </schemalist>

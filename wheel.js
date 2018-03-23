@@ -12,12 +12,15 @@ const Tweener = imports.ui.tweener;
 const WheelPopup = new Lang.Class({
     Name: 'WheelPopup',
 
-    _init: function(icons, commands) {
+    _init: function(outerRadiusRatio, innerRadiusRatio, icons, commands) {
         this.actor = new Clutter.Actor({
             reactive: true,
             visible: false
         });
         let [width, height] = this._getSize();
+        this.outerRadius = Math.floor(Math.min(width, height) / 2 * outerRadiusRatio);
+        this.innerRadius = Math.floor(this.outerRadius * innerRadiusRatio);
+
         this.actor.set_size(width, height);
         this.actor.set_background_color(new Clutter.Color({red: 0, green: 0, blue: 0, alpha: 100}));
         this.hasModal = false;
@@ -27,14 +30,16 @@ const WheelPopup = new Lang.Class({
         this.total = icons.length;
         for (let i = 0; i < this.total; i++) {
             this.sectors.push(new Sector.Sector(
-                200, 400, 10, i,this.total, icons[i], commands[i]
+                this.innerRadius, this.outerRadius, this.outerRadius / 30, i,this.total, icons[i], commands[i]
             ));
         }
         this.sectors.forEach(s => this.actor.add_actor(s.actor));
 
-        this.actor.connect('key-press-event', Lang.bind(this, this._keyPress));
-        this.actor.connect('key-release-event', Lang.bind(this, this._keyRelease));
-        this.actor.connect('motion-event', Lang.bind(this, this._motion));
+        this.actorSignals = [
+            this.actor.connect('key-press-event', Lang.bind(this, this._keyPress)),
+            this.actor.connect('key-release-event', Lang.bind(this, this._keyRelease)),
+            this.actor.connect('motion-event', Lang.bind(this, this._motion))
+        ];
         Main.uiGroup.add_actor(this.actor);
     },
 
@@ -71,6 +76,14 @@ const WheelPopup = new Lang.Class({
     },
 
     destroy: function() {
+        // destroy sectors
+        this.sectors.forEach(s => s.destroy());
+        this.sectors = [];
+
+        // disconnect signals
+        this.actorSignals.forEach(s => this.actor.disconnect(s));
+        this.actorSignals = [];
+
         this.actor.destroy();
     },
 
