@@ -19,6 +19,7 @@ the topbar (unless the "top" bar is relocated).
 # Configure
 Click the icon to open preferences menu. It can also be accessed by
 `gnome-shell-extension-prefs` command or the gnome web browser plugin.
+
 ![](images/preferences.png)
 
 The icon string should be a path of an image. If a relative position is
@@ -31,6 +32,7 @@ The shortcut key is bound to `Super+w`. The extension looks for the release time
 of the `Super` key so the shortcut should be changed.
 
 Type in some icons and commands and enjoy.
+
 ![](images/screenshot.png)
 
 
