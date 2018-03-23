@@ -24,10 +24,10 @@ const WheelPopup = new Lang.Class({
         this.selected = -1;
 
         this. sectors = [];
-        let total = icons.length;
-        for (let i = 0; i < total; i++) {
+        this.total = icons.length;
+        for (let i = 0; i < this.total; i++) {
             this.sectors.push(new Sector.Sector(
-                200, 400, 10, i, total, icons[i], commands[i]
+                200, 400, 10, i,this.total, icons[i], commands[i]
             ));
         }
         this.sectors.forEach(s => this.actor.add_actor(s.actor));
@@ -77,7 +77,9 @@ const WheelPopup = new Lang.Class({
     _keyPress: function(actor, event) {
         let keysym = event.get_key_symbol();
         let action = global.display.get_keybinding_action(event.get_key_code(), event.get_state());
-        if (keysym == Clutter.Escape)
+        if (keysym == Clutter.w) {
+            this._nextSelection();
+        } else if (keysym == Clutter.Escape)
             this.hide();
         return Clutter.EVENT_STOP;
     },
@@ -89,7 +91,7 @@ const WheelPopup = new Lang.Class({
             if (this.selected >= 0) {
                 Util.spawnCommandLine(this.sectors[this.selected].command);
             }
-        }
+        } 
     },
 
     _motion: function(actor, event) {
@@ -98,6 +100,17 @@ const WheelPopup = new Lang.Class({
         this.sectors.forEach((s, i) => {
             if (s.testPoint(x, y)) {
                 this.selected = i;
+                s.highlight();
+            } else {
+                s.removeHighlight();
+            }
+        });
+    },
+
+    _nextSelection: function() {
+        this.selected  = (this.selected + 1) % this.total;
+        this.sectors.forEach((s, i) => {
+            if (this.selected == i) {
                 s.highlight();
             } else {
                 s.removeHighlight();

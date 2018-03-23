@@ -32,7 +32,8 @@ provided, the extension will search icons in the path
 The command string should be a shell command that will be executed.
 
 The shortcut key is bound to `Super+w`. The extension looks for the release time
-of the `Super` key so the shortcut should be changed.
+of the `Super` key so the shortcut should be changed. Press `w` or move the
+mouse to switch between different options.
 
 Type in some icons and commands and enjoy.
 
