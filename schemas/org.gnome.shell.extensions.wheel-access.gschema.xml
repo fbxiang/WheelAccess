@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-shell-extensions">
+  <schema path="/org/gnome/shell/extensions/wheel-access/" id="org.gnome.shell.extensions.wheel-access">
+    <key name="wheel-access" type="as">
+        <default><![CDATA[['<Super>w']]]></default> 
+      <summary>Keybinding for wheel.</summary>
+      <description>
+          Key to bring up the selection wheel.
+      </description>
+    </key>
+    <key name="icon1" type="s">
+        <default>''</default>
+        <summary>Icon to display</summary>
+        <description>Icon to display</description>
+    </key>
+    <key name="command1" type="s">
+        <default>''</default>
+        <summary>Command to execute</summary>
+        <description>Command to execute</description>
+    </key>
+    <key name="icon2" type="s">
+        <default>''</default>
+        <summary>Icon to display</summary>
+        <description>Icon to display</description>
+    </key>
+    <key name="command2" type="s">
+        <default>''</default>
+        <summary>Command to execute</summary>
+        <description>Command to execute</description>
+    </key>
+    <key name="icon3" type="s">
+        <default>''</default>
+        <summary>Icon to display</summary>
+        <description>Icon to display</description>
+    </key>
+    <key name="command3" type="s">
+        <default>''</default>
+        <summary>Command to execute</summary>
+        <description>Command to execute</description>
+    </key>
+    <key name="icon4" type="s">
+        <default>''</default>
+        <summary>Icon to display</summary>
+        <description>Icon to display</description>
+    </key>
+    <key name="command4" type="s">
+        <default>''</default>
+        <summary>Command to execute</summary>
+        <description>Command to execute</description>
+    </key>
+    <key name="icon5" type="s">
+        <default>''</default>
+        <summary>Icon to display</summary>
+        <description>Icon to display</description>
+    </key>
+    <key name="command5" type="s">
+        <default>''</default>
+        <summary>Command to execute</summary>
+        <description>Command to execute</description>
+    </key>
+    <key name="icon6" type="s">
+        <default>''</default>
+        <summary>Icon to display</summary>
+        <description>Icon to display</description>
+    </key>
+    <key name="command6" type="s">
+        <default>''</default>
+        <summary>Command to execute</summary>
+        <description>Command to execute</description>
+    </key>
+    <key name="icon7" type="s">
+        <default>''</default>
+        <summary>Icon to display</summary>
+        <description>Icon to display</description>
+    </key>
+    <key name="command7" type="s">
+        <default>''</default>
+        <summary>Command to execute</summary>
+        <description>Command to execute</description>
+    </key>
+    <key name="icon8" type="s">
+        <default>''</default>
+        <summary>Icon to display</summary>
+        <description>Icon to display</description>
+    </key>
+    <key name="command8" type="s">
+        <default>''</default>
+        <summary>Command to execute</summary>
+        <description>Command to execute</description>
+    </key>
+  </schema>
+</schemalist>
