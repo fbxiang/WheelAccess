@@ -12,6 +12,9 @@ is something like `$HOME/.local/share/gnome-shell/extensions/`.
 cd $HOME/.local/share/gnome-shell/extensions/
 git clone https://github.com/fbxiang/WheelAccess.git
 ```
+(You may also need to rename the repository to its uuid by `mv WheelAccess wheelaccess@fbxiang.outlook.com`)
+
+Restart the desktop environment by re-login or press `alt-f2`, `r`, `enter`.
 
 Enable the extension by `gnome-tweak-tool`. You will see an icon displayed on
 the topbar (unless the "top" bar is relocated).
