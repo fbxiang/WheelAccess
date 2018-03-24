@@ -22,6 +22,7 @@ let settings;
 let button = null;
 let wheel = null;
 let signals = [];
+let settingSignals = [];
 
 function _bindKey(key, handler) {
     if (Main.wm.addKeybinding && Shell.ActionMode) {
@@ -75,15 +76,31 @@ function connectSignal(obj, signal, handler) {
     signals.push([obj, obj.connect(signal, handler)]);
 }
 
+function connectSettingSignal(obj, signal, handler) {
+    settingSignals.push([obj, obj.connect(signal, handler)]);
+}
+
 function disconnectSignals() {
     signals.forEach(s => s[0].disconnect(s[1]));
     signals = [];
 }
 
+function disconnectSettingSignals() {
+    settingSignals.forEach(s => s[0].disconnect(s[1]));
+    settingSignals = [];
+}
+
 function updateSettings() {
     unbindKeys();
+    disconnectSettingSignals();
     settings = Convenience.getSettings();
-    connectSignal(settings, 'changed::command8', () => reinit());
+    for (let i = 1; i <= 8; i++) {
+        connectSettingSignal(settings, 'changed::icon' + i, () => reinit());
+        connectSettingSignal(settings, 'changed::command' + i, () => reinit());
+    }
+    connectSettingSignal(settings, 'changed::inner-radius', () => reinit());
+    connectSettingSignal(settings, 'changed::outer-radius', () => reinit());
+
     bindKeys();
 }
 
@@ -110,6 +127,8 @@ function enable() {
 
 function disable() {
     unbindKeys();
+    disconnectSignals();
+    disconnectSettingSignals();
     destroyWheel();
     Main.panel._rightBox.remove_child(button);
 }
