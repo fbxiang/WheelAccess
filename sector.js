@@ -17,7 +17,7 @@ const Sector = new Lang.Class({
         this.index = index;
         this.total = total;
         this.iconPath = iconPath;
-        this.iconSize = this.outerRadius / 3;
+        this.iconSize = (this.outerRadius - this.innerRadius) / 1.8;
         this.command = command;
         this._initActor();
         this._initIcon();
