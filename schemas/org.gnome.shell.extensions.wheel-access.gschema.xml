@@ -9,42 +9,42 @@
       </description>
     </key>
     <key name="icon1" type="s">
-        <default>''</default>
+        <default>'download.png'</default>
         <summary>Icon to display</summary>
         <description>Icon to display</description>
     </key>
     <key name="command1" type="s">
-        <default>''</default>
+        <default>'xdg-open Downloads/'</default>
         <summary>Command to execute</summary>
         <description>Command to execute</description>
     </key>
     <key name="icon2" type="s">
-        <default>''</default>
+        <default>'chrome.png'</default>
         <summary>Icon to display</summary>
         <description>Icon to display</description>
     </key>
     <key name="command2" type="s">
-        <default>''</default>
+        <default>'chromium-browser'</default>
         <summary>Command to execute</summary>
         <description>Command to execute</description>
     </key>
     <key name="icon3" type="s">
-        <default>''</default>
+        <default>'video.png'</default>
         <summary>Icon to display</summary>
         <description>Icon to display</description>
     </key>
     <key name="command3" type="s">
-        <default>''</default>
+        <default>'xdg-open Videos/'</default>
         <summary>Command to execute</summary>
         <description>Command to execute</description>
     </key>
     <key name="icon4" type="s">
-        <default>''</default>
+        <default>'folder.png'</default>
         <summary>Icon to display</summary>
         <description>Icon to display</description>
     </key>
     <key name="command4" type="s">
-        <default>''</default>
+        <default>'xdg-open Documents/'</default>
         <summary>Command to execute</summary>
         <description>Command to execute</description>
     </key>
