@@ -131,6 +131,7 @@ function disable() {
     disconnectSettingSignals();
     destroyWheel();
     Main.panel._rightBox.remove_child(button);
+    button = null;
 }
 
 function initWheel() {
