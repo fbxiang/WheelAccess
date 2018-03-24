@@ -87,8 +87,6 @@ function updateSettings() {
     bindKeys();
 }
 
-function init() {}
-
 // update settings, create the prefs button, init the wheel
 function enable() {
     updateSettings();
@@ -148,3 +146,5 @@ function reinit() {
     updateSettings();
     reinitWheel();
 }
+
+function init() {}

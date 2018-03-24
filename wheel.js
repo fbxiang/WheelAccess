@@ -49,6 +49,7 @@ const WheelPopup = new Lang.Class({
     },
 
     show: function() {
+        if (this.hiding) return;
         this.actor.opacity = 255;
         if (!this.hasModal) {
             if (!Main.pushModal(this.actor)) {
@@ -62,6 +63,7 @@ const WheelPopup = new Lang.Class({
     },
 
     hide: function() {
+        this.hiding = true;
         if (this.hasModal) {
             Main.popModal(this.actor);
             this.hasModal = false;
@@ -71,7 +73,7 @@ const WheelPopup = new Lang.Class({
                          { opacity: 0,
                            time: 0.2,
                            transition: 'easeOutQuad',
-                           onComplete: () => {this.actor.hide();}
+                           onComplete: () => { this.actor.hide(); this.hiding = false; }
                          });
     },
 

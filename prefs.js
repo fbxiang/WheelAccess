@@ -79,7 +79,6 @@ const SettingWidget = new GObject.Class({
             }
             this.get_toplevel().destroy();
         });
-
     }
 });
 
