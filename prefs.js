@@ -19,7 +19,7 @@ const SettingWidget = new GObject.Class({
         this.orientation = Gtk.Orientation.VERTICAL;
         this._settings = Convenience.getSettings();
 
-        let title = '<b>' + "Wheel Access Preference" + '</b>';
+        let title = '<b>Wheel Access Preference</b>';
         this.pack_start(new Gtk.Label({ label: title,
                                         use_markup: true,
                                         halign: Gtk.Align.START,
@@ -28,17 +28,23 @@ const SettingWidget = new GObject.Class({
 
         let iconEntries = [];
         let commandEntries = [];
+        let buttons = [];
         for (let i = 0; i < 8; i++) {
             let icon = new Gtk.Entry(); 
             let command = new Gtk.Entry(); 
             let iconName = 'icon' + (i+1);
             let commandName = 'command' + (i+1);
+            let button = new Gtk.Button({label: 'select...'});
+
             iconEntries.push(icon);
             commandEntries.push(command);
+            buttons.push(button);
+
             let actionBox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
             actionBox.pack_start(new Gtk.Label({ label: 'Action ' + (i+1) }), 0, 0, 5);
             actionBox.pack_start(new Gtk.Label({ label: 'icon:' }), 0, 0, 5);
             actionBox.pack_start(icon, 0, 0, 5);
+            actionBox.pack_start(button, 0, 0, 5);
             actionBox.pack_start(new Gtk.Label({ label: 'Command:' + (i+1) }), 0, 0, 5);
             actionBox.pack_start(command, 1, 1, 5);
             this.pack_start(actionBox, 1, 1, 5);
@@ -47,7 +53,31 @@ const SettingWidget = new GObject.Class({
             command.set_text(this._settings.get_string(commandName));
             icon.connect('focus-out-event', () => { this._settings.set_string(iconName, icon.get_text()); });
             command.connect('focus-out-event', () => { this._settings.set_string(commandName, command.get_text()); });
+            button.connect('clicked', () => {
+                let chooser = new Gtk.FileChooserDialog({title: "Choose File",
+                                                         action: Gtk.FileChooserAction.OPEN
+                                                        });
+                chooser.add_button(Gtk.STOCK_CANCEL, 0);
+                chooser.add_button(Gtk.STOCK_OPEN, 1);
+                chooser.set_default_response(1);
+
+                let filter = new Gtk.FileFilter();
+                filter.add_pixbuf_formats();
+                chooser.filter = filter;
+
+                let filename;
+                if (chooser.run() == 1) {
+                    filename = chooser.get_filename();
+                    icon.set_text(filename);
+                }
+                chooser.destroy();
+                if (filename) {
+                    this._settings.set_string(iconName, filename);
+                }
+            });
         }
+
+
 
         let sliderBox1 = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL });
         let label1 = new Gtk.Label({ label: 'Wheel Size'});
